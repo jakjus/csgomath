@@ -1,14 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: "My Gatsby Site",
+    title: "csgomath",
   },
   plugins: [
-    {
-      resolve: "gatsby-plugin-google-analytics",
-      options: {
-        trackingId: "",
-      },
-    },
     "gatsby-plugin-sharp",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
