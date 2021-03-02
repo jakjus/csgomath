@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, graphql, useStaticQuery } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import moment from "moment";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05)"
@@ -33,7 +34,7 @@ const IndexPage = () => {
 		query MyQuery {
 			example {
 				result {
-					datetime(fromNow: true)
+					datetime
 					value
 					case {
 						name
@@ -94,7 +95,7 @@ const IndexPage = () => {
 												{r.case.name}
 											</Link>
 										</h4>
-										<div class="mb-1 text-muted">{r.datetime}</div>
+										<div class="mb-1 text-muted">{moment(r.datetime).fromNow()}</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.case.sale_price_text}</strong>
 										</p>
@@ -132,7 +133,7 @@ const IndexPage = () => {
 												{r.key.name}
 											</Link>
 										</h4>
-										<div class="mb-1 text-muted">{r.datetime}</div>
+										<div class="mb-1 text-muted">{moment(r.datetime).fromNow()}</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.key.sale_price_text}</strong>
 										</p>

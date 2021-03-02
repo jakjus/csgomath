@@ -31,7 +31,7 @@ const Details = ({ pageContext: { r } }) => {
 	};
 	const urlMarket = name =>
 		'https://steamcommunity.com/market/listings/730/' + name;
-	const urlMarketQuery = name =>
+	const urlMarketQuery = name => name.includes('|') &&
 		'https://steamcommunity.com/market/search?q="' + name +'"';
 	const color = sale => (sale < 0 ? "text-danger" : "text-success");
 	return (
