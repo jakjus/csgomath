@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: "csgomath",
+		siteUrl: `https://csgomath.com`
   },
   plugins: [
     "gatsby-plugin-sharp",

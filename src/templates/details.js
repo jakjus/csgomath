@@ -88,7 +88,7 @@ const Details = ({ pageContext: { r } }) => {
 					<ul class="list-group" style={boxShadow}>
 						{r.asset_description.descriptions.map(
 							el =>
-								el.value.replaceAll(" ", "") && (
+								el.value.replace(" ", "") && (
 									<Link to={urlMarketQuery(el.value)} target="_blank">
 										<li class="shadhover list-group-item d-flex justify-content-between lh-condensed">
 											<div>

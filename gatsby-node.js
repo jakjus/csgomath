@@ -11,9 +11,7 @@ exports.sourceNodes = async ({
 	const resultData = await result.json();
 	// create node for build time data example in the docs
 	createNode({
-		// nameWithOwner and url are arbitrary fields from the data
 		result: resultData,
-		// required fields
 		id: `example-build-time-data`,
 		parent: null,
 		children: [],
@@ -67,7 +65,6 @@ exports.createPages = async ({ graphql, actions }) => {
 			}
 		}
 	`);
-	console.log(myData)
 
 	myData.data.example.result.forEach(r => {
 		createPage({
