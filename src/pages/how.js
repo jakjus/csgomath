@@ -1,18 +1,18 @@
 import React from "react";
 import Layout from "../components/layout";
+import SEO from "../components/seo"
 
 // data
 
 const Info = () => (
 	<Layout>
+		<SEO title="How to" description="How to use CS:GO Math?" />
 		<div class="blog-post">
 			<h3>how... it works?</h3>
 			<p>
-				<strong>csgomath</strong> is intended to be a helpful mathematical/statistical set of tools to better understand the <i>Counter Strike: Global Offensive</i> market.
+				<strong>csgomath</strong> provides calculation of an <i>estimated value</i> of a CS:GO case and key.
 			</p>
-				<p>
-					Currently, it provides a calculation of an <i>estimated value</i> of a CS:GO case and key.
-				</p>
+			<code>Example: If estimated value is 3$, then after 100 case openings, you should get skins of 300$ value.</code>
 			<h3>how... can i use it?</h3>
 			<p>Website shows how profitable is it to buy chest and key and open it by yourself.</p>
 			<p>The <i>higher</i> the profit percentage, the <i>better</i> outcome you will have by <strong>opening the chests</strong>, rather than buying individual items.</p>

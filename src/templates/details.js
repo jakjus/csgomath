@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import "@fontsource/dm-serif-display";
 import "@fontsource/lato";
 import { Link } from "gatsby";
+import SEO from "../components/seo";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05  )"
@@ -35,6 +36,7 @@ const Details = ({ pageContext: { r } }) => {
 	const color = sale => (sale < 0 ? "text-danger" : "text-success");
 	return (
 		<Layout>
+			<SEO title={r.name} description={r.asset_description.descriptions.map(el => el.value).join(", ")}/>
 			<div
 				style={{
 					borderBottom: "1px solid #ebebeb"
