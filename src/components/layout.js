@@ -23,13 +23,15 @@ export default function Layout({ children }) {
 				style={bottom}
 				className="row mb-4 flex-nowrap justify-content-between align-items-center py-3"
 			>
-				<div class="col-4 pt-1 text-muted">
+				<div class="col-2 pt-1 text-muted">
 					<Link to="/how">how</Link>
 				</div>
-				<Link to="/" style={font} class="col-4 text-center">
+				<div class="col-8 text-center align">
+				<Link to="/" style={font} >
 					csgomath
 				</Link>
-				<div class="col-4 d-flex text-muted justify-content-end">
+				</div>
+				<div class="col-2 d-flex text-muted justify-content-end">
 					<Link to="https://jakjus.com" target="_blank">author</Link>
 				</div>
 			</div>
