@@ -132,7 +132,6 @@ def get_estimated_one_weapon_value(name):
     ss = ' '.join(list(map(lambda x: x['name'], items)))
     try:
         if 'StatTrak' in ss:
-            part_total = 0
             found = 0
             for item in items:
                 for odd in odds_wear:
@@ -143,19 +142,16 @@ def get_estimated_one_weapon_value(name):
                         found += 0.1*odds_wear[odd]
                         total += 0.1*float(text_to_price(item['sale_price_text']))*odds_wear[odd]
             if found < 1:
-                part_total /= found
-            total += part_total
+                total /= found
         else:
-            part_total = 0
             found = 0
             for item in items:
                 for odd in odds_wear:
                     if odd in item['name']:
                         found += odds_wear[odd]
-                        part_total += float(text_to_price(item['sale_price_text']))*odds_wear[odd]
+                        total += float(text_to_price(item['sale_price_text']))*odds_wear[odd]
             if found < 1:
-                part_total /= found
-            total += part_total
+                total /= found
     except Exception as e:
         print('Error with:',name, e)
     return round(total)
