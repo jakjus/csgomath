@@ -33,7 +33,7 @@ const IndexPage = () => {
 	const myData = useStaticQuery(graphql`
 		query MyQuery {
 			example {
-				result {
+				result(sort: { fields: [datetime], order: DESC }) {
 					datetime
 					case_key_list_value {
 						value
@@ -65,7 +65,7 @@ const IndexPage = () => {
 	return (
 		<Layout>
 			<SEO title="Home" description="CS:GO Math - Homepage" />
-			{myData.example.result.case_key_list_value.map(r => (
+			{myData.example.result[0].case_key_list_value.map(r => (
 				<div style={boxShadow} class="card p-3 mb-4 h-md-250">
 					<div class="row no-gutters">
 						<div class="col-md-6">
@@ -98,7 +98,7 @@ const IndexPage = () => {
 											</Link>
 										</h4>
 										<div class="mb-1 text-muted">
-											{moment(myData.example.result.datetime).fromNow()}
+											{moment(myData.example.result[0].datetime).fromNow()}
 										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.case.sale_price_text}</strong>
@@ -138,7 +138,7 @@ const IndexPage = () => {
 											</Link>
 										</h4>
 										<div class="mb-1 text-muted">
-											{moment(myData.example.result.datetime).fromNow()}
+											{moment(myData.example.result[0].datetime).fromNow()}
 										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.key.sale_price_text}</strong>

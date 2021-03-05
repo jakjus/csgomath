@@ -27,7 +27,7 @@ exports.createPages = async ({ graphql, actions }) => {
 	const myData = await graphql(`
 		query MyQuery {
 			example {
-				result {
+				result(sort: { fields: [datetime], order: DESC }) {
 					datetime
 					case_key_list_value {
 						value
@@ -68,7 +68,7 @@ exports.createPages = async ({ graphql, actions }) => {
 		}
 	`);
 
-	myData.data.example.result.forEach(r => {
+	myData.data.example.result[0].case_key_list_value.forEach(r => {
 		createPage({
 			path: `/${r.case.name}`,
 			component: require.resolve(`./src/templates/details.js`),

@@ -43,7 +43,7 @@ def get_csgo_items():
     l = []
     i = 0
     while True:
-        url = 'https://steamcommunity.com/market/search/render/?query=&start='+str(i*100)+'&count=100&appid=730&norender=1'
+        url = 'https://steamcommunity.com/market/search/render/?query=&start='+str(i*100)+'&count=100&appid=730&sort_column=name&sort_dir=asc&norender=1'
         page = requests.get(url, headers=headers)
         check(page)
         d = page.json()
@@ -74,9 +74,11 @@ filter_items_end = lambda name: list(filter(
     and x['name'].index(name) == len(x['name']) - len(name), 
     items)
                                 )
-filter_items = lambda name: list(filter(
+filter_items = lambda name: list(map(
+    lambda: x: x[2:] if '★' in x else x,
+    list(filter(
     lambda x: name in x['name'], 
-    items)
+    items)))
                                 )
 
 def extract_case_key_list(cases, case_keys):
