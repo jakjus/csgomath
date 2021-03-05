@@ -28,38 +28,40 @@ exports.createPages = async ({ graphql, actions }) => {
 		query MyQuery {
 			example {
 				result {
-					datetime(fromNow: true)
-					value
-					case {
-						name
-						sale_price
-						sale_price_text
-						sell_listings
-						sell_price
-						sell_price_text
-						asset_description {
-							descriptions {
-								value
-								color
-								total
+					datetime
+					case_key_list_value {
+						value
+						case {
+							name
+							sale_price
+							sale_price_text
+							sell_listings
+							sell_price
+							sell_price_text
+							asset_description {
+								descriptions {
+									value
+									color
+									total
+								}
+								icon_url
+								type
 							}
-							icon_url
-							type
 						}
-					}
-					key {
-						sale_price
-						sale_price_text
-						sell_listings
-						asset_description {
-							descriptions {
-								value
-								color
+						key {
+							sale_price
+							sale_price_text
+							sell_listings
+							asset_description {
+								descriptions {
+									value
+									color
+								}
+								icon_url
+								type
 							}
-							icon_url
-							type
+							name
 						}
-						name
 					}
 				}
 			}

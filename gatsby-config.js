@@ -10,6 +10,12 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
     "gatsby-transformer-sharp",
+		{
+      resolve: `gatsby-plugin-google-adsense`,
+      options: {
+        publisherId: `ca-pub-7655503975038311`
+      },
+    },
     {
       resolve: "gatsby-source-filesystem",
       options: {

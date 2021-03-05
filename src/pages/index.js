@@ -35,25 +35,27 @@ const IndexPage = () => {
 			example {
 				result {
 					datetime
-					value
-					case {
-						name
-						sale_price
-						sale_price_text
-						sell_listings
-						sell_price
-						sell_price_text
-						asset_description {
-							icon_url
+					case_key_list_value {
+						value
+						case {
+							name
+							sale_price
+							sale_price_text
+							sell_listings
+							sell_price
+							sell_price_text
+							asset_description {
+								icon_url
+							}
 						}
-					}
-					key {
-						sale_price
-						sale_price_text
-						asset_description {
-							icon_url
+						key {
+							sale_price
+							sale_price_text
+							asset_description {
+								icon_url
+							}
+							name
 						}
-						name
 					}
 				}
 			}
@@ -63,7 +65,7 @@ const IndexPage = () => {
 	return (
 		<Layout>
 			<SEO title="Home" description="CS:GO Math - Homepage" />
-			{myData.example.result.map(r => (
+			{myData.example.result.case_key_list_value.map(r => (
 				<div style={boxShadow} class="card p-3 mb-4 h-md-250">
 					<div class="row no-gutters">
 						<div class="col-md-6">
@@ -95,7 +97,9 @@ const IndexPage = () => {
 												{r.case.name}
 											</Link>
 										</h4>
-										<div class="mb-1 text-muted">{moment(r.datetime).fromNow()}</div>
+										<div class="mb-1 text-muted">
+											{moment(myData.example.result.datetime).fromNow()}
+										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.case.sale_price_text}</strong>
 										</p>
@@ -133,7 +137,9 @@ const IndexPage = () => {
 												{r.key.name}
 											</Link>
 										</h4>
-										<div class="mb-1 text-muted">{moment(r.datetime).fromNow()}</div>
+										<div class="mb-1 text-muted">
+											{moment(myData.example.result.datetime).fromNow()}
+										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 											Sale Price: <strong>{r.key.sale_price_text}</strong>
 										</p>

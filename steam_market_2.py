@@ -156,8 +156,8 @@ def get_estimated_one_weapon_value(name):
             if found < 1:
                 part_total /= found
             total += part_total
-    except:
-        print(name)
+    except Exception as e:
+        print('Error with:',name, e)
     return round(total)
 
 def get_estimated_chest_value(desc):
