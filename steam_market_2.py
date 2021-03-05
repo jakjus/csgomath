@@ -74,12 +74,10 @@ filter_items_end = lambda name: list(filter(
     and x['name'].index(name) == len(x['name']) - len(name), 
     items)
                                 )
-filter_items = lambda name: list(map(
-    lambda x: x[2:] if '★' in x else x,
-    list(filter(
-    lambda x: name in x['name'], 
-    items)))
-                                )
+filter_items = lambda name: list(filter(
+    lambda x: name.replace('★ ','') in x['name'], 
+    items)
+                            )
 
 def extract_case_key_list(cases, case_keys):
     l = []
