@@ -12,7 +12,6 @@ import math
 import pprint
 import pickle
 import datetime
-import requests
 
 
 odds_rarity = {'4b69ff': 0.7992327, '8847ff': 0.1598465, 'd32ce6': 0.0319693, 'eb4b4b': 0.0063939, 'ffd700': 0.0025575}
