@@ -75,7 +75,7 @@ filter_items_end = lambda name: list(filter(
     items)
                                 )
 filter_items = lambda name: list(map(
-    lambda: x: x[2:] if '★' in x else x,
+    lambda x: x[2:] if '★' in x else x,
     list(filter(
     lambda x: name in x['name'], 
     items)))
