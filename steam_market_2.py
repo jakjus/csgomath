@@ -11,6 +11,8 @@ import time
 import math
 import pprint
 import pickle
+import datetime
+import requests
 
 
 odds_rarity = {'4b69ff': 0.7992327, '8847ff': 0.1598465, 'd32ce6': 0.0319693, 'eb4b4b': 0.0063939, 'ffd700': 0.0025575}
@@ -226,10 +228,6 @@ case_key_list_value = add_chest_value(case_key_list_sale)
 
 # In[219]:
 
-
-import json 
-import datetime
-import requests
 
 url = 'http://localhost:3000/api/cases'
 final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value':case_key_list_value}
