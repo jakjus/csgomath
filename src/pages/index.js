@@ -33,7 +33,7 @@ const IndexPage = () => {
 	const myData = useStaticQuery(graphql`
 		query MyQuery {
 			example {
-				result(sort: { fields: [datetime], order: DESC }) {
+				result {
 					datetime
 					case_key_list_value {
 						value

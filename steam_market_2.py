@@ -119,7 +119,11 @@ def add_sale_price(case_key_list):
 def add_chest_value(case_key_list):
     upd_ckl = []
     for case_key in case_key_list:
-        res = get_estimated_chest_value(case_key[0]['asset_description']['descriptions'])
+        try:
+            res = get_estimated_chest_value(case_key[0]['asset_description']['descriptions'])
+        except Exception as e:
+            print('Error:',e,'Case:',case_key[0])
+
         new_case = case_key[0]
         new_case['asset_description']['descriptions'] = res['new_desc']
         upd_ck = {'case': new_case, 'key': case_key[1], 'value':get_estimated_chest_value(case_key[0]['asset_description']['descriptions'])['total']}
