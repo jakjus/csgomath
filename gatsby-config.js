@@ -9,6 +9,7 @@ module.exports = {
     "gatsby-plugin-sharp",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
+		`gatsby-plugin-image`,
     "gatsby-transformer-sharp",
 		{
       resolve: `gatsby-plugin-google-adsense`,

@@ -1,18 +1,22 @@
 const fetch = require(`node-fetch`);
 const path = require(`path`);
-const { createFilePath } = require(`gatsby-source-filesystem`);
+const { createRemoteFileNode } = require("gatsby-source-filesystem");
+//const { createFilePath } = require(`gatsby-source-filesystem`);
 
 exports.sourceNodes = async ({
-	actions: { createNode },
-	createContentDigest
+	actions: { createNode, createNodeField },
+	createContentDigest,
+	createNodeId,
+	cache,
+	store
 }) => {
 	// get data from GitHub API at build time
 	const result = await fetch(`http://51.195.45.0:3000/api/cases`);
-	const resultData = await result.json();
+	let resultData = await result.json();
 	// create node for build time data example in the docs
-	createNode({
+	let node = await createNode({
 		result: resultData,
-		id: `example-build-time-data`,
+		id: `myresult`,
 		parent: null,
 		children: [],
 		internal: {
@@ -22,8 +26,41 @@ exports.sourceNodes = async ({
 	});
 };
 
+exports.onCreateNode = async ({ node, actions, getCache, createNodeId }) => {
+	const { createNode, createNodeField } = actions;
+	if (node.id == "myresult") {
+		const img_preurl =
+			"https://community.akamai.steamstatic.com/economy/image/";
+		for (pair of node.result[0].case_key_list_value) {
+			let newnode = await createRemoteFileNode({
+				url:
+					img_preurl +
+					pair.case.asset_description.icon_url,
+				parentNodeId: node.result[0].case_key_list_value[0].case.id,
+				getCache,
+				createNode,
+				createNodeId
+			});
+			let newnode2 = await createRemoteFileNode({
+				url:
+					img_preurl +
+					pair.key.asset_description.icon_url,
+				parentNodeId: node.result[0].case_key_list_value[0].id,
+				getCache,
+				createNode,
+				createNodeId
+			});
+
+			pair.case.image___NODE = newnode.id;
+			pair.key.image___NODE = newnode2.id;
+		}
+	}
+	// Transform the new node here and create a new node or
+	// create a new node field.
+};
+
 exports.createPages = async ({ graphql, actions }) => {
-	const { createPage } = actions;
+	const { createPage, createNode } = actions;
 	const myData = await graphql(`
 		query MyQuery {
 			example {
@@ -38,6 +75,13 @@ exports.createPages = async ({ graphql, actions }) => {
 							sell_listings
 							sell_price
 							sell_price_text
+							image {
+								childImageSharp {
+									gatsbyImageData(
+										placeholder: BLURRED
+									)
+								}
+							}
 							asset_description {
 								descriptions {
 									value
@@ -49,9 +93,17 @@ exports.createPages = async ({ graphql, actions }) => {
 							}
 						}
 						key {
+							name
 							sale_price
 							sale_price_text
 							sell_listings
+							image {
+								childImageSharp {
+									gatsbyImageData(
+										placeholder: BLURRED
+									)
+								}
+							}
 							asset_description {
 								descriptions {
 									value
@@ -60,7 +112,6 @@ exports.createPages = async ({ graphql, actions }) => {
 								icon_url
 								type
 							}
-							name
 						}
 					}
 				}
@@ -68,7 +119,7 @@ exports.createPages = async ({ graphql, actions }) => {
 		}
 	`);
 
-	myData.data.example.result[0].case_key_list_value.forEach(r => {
+	myData.data.example.result[0].case_key_list_value.forEach(async r => {
 		createPage({
 			path: `/${r.case.name}`,
 			component: require.resolve(`./src/templates/details.js`),

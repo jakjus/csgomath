@@ -4,6 +4,7 @@ import "@fontsource/dm-serif-display";
 import "@fontsource/lato";
 import { Link } from "gatsby";
 import SEO from "../components/seo";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05  )"
@@ -30,13 +31,19 @@ const Details = ({ pageContext: { r } }) => {
 		return toadd + r;
 	};
 	const urlMarket = name =>
-		'https://steamcommunity.com/market/listings/730/' + name;
-	const urlMarketQuery = name => name.includes('|') &&
-		'https://steamcommunity.com/market/search?q="' + name +'"';
+		"https://steamcommunity.com/market/listings/730/" + name;
+	const urlMarketQuery = name =>
+		name.includes("|") &&
+		'https://steamcommunity.com/market/search?q="' + name + '"';
 	const color = sale => (sale < 0 ? "text-danger" : "text-success");
 	return (
 		<Layout>
-			<SEO title={r.name} description={r.asset_description.descriptions.map(el => el.value).join(", ")}/>
+			<SEO
+				title={r.name}
+				description={r.asset_description.descriptions
+					.map(el => el.value)
+					.join(", ")}
+			/>
 			<div
 				style={{
 					borderBottom: "1px solid #ebebeb"
@@ -44,9 +51,10 @@ const Details = ({ pageContext: { r } }) => {
 				class="row pb-4"
 			>
 				<div class="col-sm-4">
-					<img
-						src={img_preurl + r.asset_description.icon_url}
-						class="img-fluid"
+					<GatsbyImage
+						alt={`Image of ${r.name}`}
+						image={getImage(r.image)}
+						//class="img-fluid"
 					/>
 				</div>
 				<div class="col-sm-8">
@@ -54,16 +62,16 @@ const Details = ({ pageContext: { r } }) => {
 						<strong class="d-inline-block mb-2 text-primary">
 							{r.asset_description.type}
 						</strong>
-						<h4 class="mb-0">
-							<Link
-								style={{ fontFamily: "DM Serif Display" }}
-								class="text-dark"
-								to={urlMarket(r.name)}
-								target="_blank"
-							>
-								{r.name}
-							</Link>
-						</h4>
+						<h4 class="mb-0">{r.name}</h4>
+						<Link
+							style={{ fontSize: "0.85rem" }}
+							to={urlMarket(r.name)}
+							target="_blank"
+						>
+							<button type="button" class="my-2 btn btn-outline-dark">
+								Check on Steam
+							</button>
+						</Link>
 						<div class="mb-1 text-muted">{r.datetime}</div>
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Sale Price: </span>

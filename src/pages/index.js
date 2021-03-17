@@ -3,6 +3,7 @@ import { Link, graphql, useStaticQuery } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import moment from "moment";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05)"
@@ -44,17 +45,31 @@ const IndexPage = () => {
 							sell_listings
 							sell_price
 							sell_price_text
+							image {
+								childImageSharp {
+									gatsbyImageData(
+										placeholder: BLURRED
+									)
+								}
+							}
 							asset_description {
 								icon_url
 							}
 						}
 						key {
+							name
+							image {
+								childImageSharp {
+									gatsbyImageData(
+										placeholder: BLURRED
+									)
+								}
+							}
 							sale_price
 							sale_price_text
 							asset_description {
 								icon_url
 							}
-							name
 						}
 					}
 				}
@@ -75,9 +90,10 @@ const IndexPage = () => {
 									align="center"
 								>
 									<Link to={r.case.name}>
-										<img
-											src={img_preurl + r.case.asset_description.icon_url}
-											class="img-fluid"
+										<GatsbyImage 
+											alt={`Image of ${r.case.name}`}
+											image={getImage(r.case.image)}
+											//class="img-fluid"
 										/>
 									</Link>
 								</div>
@@ -115,9 +131,10 @@ const IndexPage = () => {
 									align="center"
 								>
 									<Link to={r.key.name}>
-										<img
-											src={img_preurl + r.key.asset_description.icon_url}
-											class="img-fluid"
+										<GatsbyImage 
+											alt={`Image of ${r.key.name}`}
+											image={getImage(r.key.image)}
+											//class="img-fluid"
 										/>
 									</Link>
 								</div>
