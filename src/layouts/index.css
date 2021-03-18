@@ -2,6 +2,18 @@ body {
 	font-family: "Lato", georgia, serif;
 }
 
+.learn-more {
+    text-decoration: none;
+    color: #000;
+    margin-top: 8px
+}
+
+.learn-more:hover {
+    text-decoration: none;
+    color: blue;
+    margin-top: 8px
+}
+
 .blog-post-title {
     margin-bottom: .25rem;
     font-size: 2.5rem;

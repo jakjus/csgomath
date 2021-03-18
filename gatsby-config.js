@@ -11,6 +11,7 @@ module.exports = {
     "gatsby-plugin-sitemap",
 		`gatsby-plugin-image`,
     "gatsby-transformer-sharp",
+		//`gatsby-plugin-fontawesome-css`,
 		{
       resolve: `gatsby-plugin-google-adsense`,
       options: {

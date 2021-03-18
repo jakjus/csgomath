@@ -5,6 +5,8 @@ import "@fontsource/lato";
 import { Link } from "gatsby";
 import SEO from "../components/seo";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSteam } from "@fortawesome/free-brands-svg-icons";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05  )"
@@ -79,7 +81,8 @@ const Details = ({ pageContext: { r } }) => {
 							<button type="button" 
 								style={{ fontSize: "0.85rem" }}
 								class="my-2 btn btn-outline-dark">
-								Check on Steam
+								Check on {" "}
+      <FontAwesomeIcon icon={faSteam} class="ml-1"/>
 							</button>
 						</Link>
 					</div>
