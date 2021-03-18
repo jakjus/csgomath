@@ -63,15 +63,6 @@ const Details = ({ pageContext: { r } }) => {
 							{r.asset_description.type}
 						</strong>
 						<h4 class="mb-0">{r.name}</h4>
-						<Link
-							style={{ fontSize: "0.85rem" }}
-							to={urlMarket(r.name)}
-							target="_blank"
-						>
-							<button type="button" class="my-2 btn btn-outline-dark">
-								Check on Steam
-							</button>
-						</Link>
 						<div class="mb-1 text-muted">{r.datetime}</div>
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Sale Price: </span>
@@ -81,6 +72,16 @@ const Details = ({ pageContext: { r } }) => {
 							<span class="text-muted"> Sell Listings: </span>
 							<strong>{r.sell_listings}</strong>
 						</p>
+						<Link
+							to={urlMarket(r.name)}
+							target="_blank"
+						>
+							<button type="button" 
+								style={{ fontSize: "0.85rem" }}
+								class="my-2 btn btn-outline-dark">
+								Check on Steam
+							</button>
+						</Link>
 					</div>
 				</div>
 			</div>
