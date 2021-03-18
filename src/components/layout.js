@@ -20,6 +20,7 @@ const font = {
 export default function Layout({ children }) {
 	return (
 		<>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css"/>
 			<div className="container">
 				<div
 					style={bottom}
@@ -47,7 +48,15 @@ export default function Layout({ children }) {
 					<Link to="https://jakjus.com">@jakjus</Link>.
 				</p>
 			</footer>
-			<CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
+			<div class="alert text-center cookiealert" role="alert">
+				<b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn more</a>
+
+				<button type="button" class="btn btn-primary btn-sm acceptcookies">
+						I agree
+				</button>
+		</div>
+			<script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+
 		</>
 	);
 }
