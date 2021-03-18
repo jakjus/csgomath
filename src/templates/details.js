@@ -82,7 +82,7 @@ const Details = ({ pageContext: { r } }) => {
 								style={{ fontSize: "0.85rem" }}
 								class="my-2 btn btn-outline-dark">
 								Check on {" "}
-      <FontAwesomeIcon icon={faSteam} class="ml-1"/>
+      <FontAwesomeIcon icon={faSteam} />
 							</button>
 						</Link>
 					</div>
