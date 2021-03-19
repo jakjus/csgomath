@@ -158,7 +158,7 @@ const IndexPage = () => {
 											{moment(myData.example.result[0].datetime).fromNow()}
 										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
-											Sale Price: <strong>{r.key.sale_price_text}</strong>
+											Sale Price: <strong>$2.50</strong>
 										</p>
 									</div>
 								</div>
@@ -172,7 +172,7 @@ const IndexPage = () => {
 									<p class="my-0">Total Sale Price</p>
 								</div>
 								<span class="text-muted">
-									{saleToStr(r.key.sale_price + r.case.sale_price)}
+									{saleToStr(250 + r.case.sale_price)}
 								</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -189,10 +189,10 @@ const IndexPage = () => {
 								</div>
 								<span
 									class={`${color(
-										r.value - (r.key.sale_price + r.case.sale_price)
+										r.value - (250 + r.case.sale_price)
 									)}`}
 								>
-									{saleToStr(r.value - (r.key.sale_price + r.case.sale_price))}
+									{saleToStr(r.value - (250 + r.case.sale_price))}
 								</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -203,12 +203,12 @@ const IndexPage = () => {
 								</div>
 								<strong
 									class={`${color(
-										r.value - (r.key.sale_price + r.case.sale_price)
+										r.value - (250 + r.case.sale_price)
 									)}`}
 								>
 									{Math.round(
-										((r.value - (r.key.sale_price + r.case.sale_price)) /
-											(r.key.sale_price + r.case.sale_price)) *
+										((r.value - (250 + r.case.sale_price)) /
+											(250 + r.case.sale_price)) *
 											100
 									) + "%"}
 								</strong>

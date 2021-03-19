@@ -66,10 +66,22 @@ const Details = ({ pageContext: { r } }) => {
 						</strong>
 						<h4 class="mb-0">{r.name}</h4>
 						<div class="mb-1 text-muted">{r.datetime}</div>
+						{r.name.includes('Key') ? <>
+						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
+							<span class="text-muted"> Fixed Sale Price: </span>
+							<strong>$2.50</strong>
+						</p>
+						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
+							<span class="text-muted"> Market Sale Price: </span>
+							<strong>{r.sale_price_text}</strong>
+						</p>
+						</>
+						:
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Sale Price: </span>
 							<strong>{r.sale_price_text}</strong>
-						</p>
+						</p>}
+
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Sell Listings: </span>
 							<strong>{r.sell_listings}</strong>
