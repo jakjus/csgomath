@@ -26,21 +26,21 @@ module.exports = {
       },
       __key: "images",
     },
-		// {
-    //   resolve: `gatsby-plugin-manifest`,
-    //   options: {
-    //     name: `csgomath`,
-    //     short_name: `csgomath`,
-    //     start_url: `/`,
-    //     background_color: `#fafafa`,
-    //     theme_color: `#fafafa`,
-    //     // Enables "Add to Homescreen" prompt and disables browser UI (including back button)
-    //     // see https://developers.google.com/web/fundamentals/web-app-manifest/#display
-    //     display: `standalone`,
-    //     icon: `src/images/icon.png`, // This path is relative to the root of the site.
-    //   },
-    // },
-		//`gatsby-plugin-offline`,
+		{
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `csgomath`,
+        short_name: `csgomath`,
+        start_url: `/`,
+        background_color: `#fafafa`,
+        theme_color: `#fafafa`,
+        // Enables "Add to Homescreen" prompt and disables browser UI (including back button)
+        // see https://developers.google.com/web/fundamentals/web-app-manifest/#display
+        display: `standalone`,
+        icon: `src/images/icon.png`, // This path is relative to the root of the site.
+      },
+    },
+		`gatsby-plugin-offline`,
 		`gatsby-plugin-react-helmet`
   ],
 };
