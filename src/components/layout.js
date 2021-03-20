@@ -35,7 +35,7 @@ export default function Layout({ children }) {
 						</Link>
 					</div>
 					<div class="col-2 d-flex text-muted justify-content-end">
-						<Link to="https://jakjus.com" target="_blank">
+						<Link to="https://jakjus.com" target="_blank" rel="noreferrer">
 							author
 						</Link>
 					</div>
