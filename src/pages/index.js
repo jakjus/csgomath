@@ -1,9 +1,11 @@
 import * as React from "react";
+import { useState } from "react";
 import { Link, graphql, useStaticQuery } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import moment from "moment";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { Scatter, Line } from "react-chartjs-2";
 
 const boxShadow = {
 	boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05)"
@@ -47,9 +49,7 @@ const IndexPage = () => {
 							sell_price_text
 							image {
 								childImageSharp {
-									gatsbyImageData(
-										placeholder: BLURRED
-									)
+									gatsbyImageData(placeholder: BLURRED)
 								}
 							}
 							asset_description {
@@ -60,9 +60,7 @@ const IndexPage = () => {
 							name
 							image {
 								childImageSharp {
-									gatsbyImageData(
-										placeholder: BLURRED
-									)
+									gatsbyImageData(placeholder: BLURRED)
 								}
 							}
 							sale_price
@@ -77,6 +75,137 @@ const IndexPage = () => {
 		}
 	`);
 
+	myData.example.result.map(res => {
+		res.case_key_list_value.map(cklv => {
+			myData.example.result[0].case_key_list_value.map(cklvhere => {
+				if (cklv.case.name == cklvhere.case.name) {
+					cklvhere.history = cklvhere.history || [];
+					cklvhere.history.push({
+						datetime: res.datetime,
+						sale_price: 249 + cklv.case.sale_price,
+						value: cklv.value
+					});
+				}
+			});
+		});
+	});
+
+	const [open, setOpen] = useState(null);
+
+	const valueData = dataArr => {
+		let datasets = [];
+		dataArr.map(dataObj =>
+			datasets.push({
+				label: dataObj.label,
+				borderColor: dataObj.color,
+				data: dataObj.data,
+				fill: false,
+				cubicInterpolationMode: "default",
+				borderDash: [],
+				borderDashOffset: 0.0,
+				pointBorderColor: "rgba(255,255,255,0)",
+				pointBorderWidth: 20,
+				pointHoverRadius: 4,
+				pointHoverBorderWidth: 15,
+				pointRadius: 0
+			})
+		);
+		return {
+			datasets: datasets
+		};
+	};
+
+	const processHistory = (history, field) => {
+		let newHistory = [];
+		history
+			.sort((a, b) => new Date(a) > new Date(b))
+			.map(h =>
+				newHistory.map(a => a.datetime).includes(h.datetime)
+					? null
+					: newHistory.push({ t: h.datetime, y: h[field] })
+			);
+		return newHistory;
+	};
+
+	const lineOptions = {
+		//responsive: true,
+		// scales: {
+		// 	yAxes: [{ display: false }],
+		// 	xAxes: [{ type: "time", time: { unit: "month" } }]
+		// },
+		// maintainAspectRatio: false,
+		legend: {
+			//display: false
+		},
+		tooltips: {
+			//enabled: false,
+			callbacks: {
+				label: (t, c) =>
+					c.datasets[t.datasetIndex].label + ": " + saleToStr(t.value)
+			},
+			backgroundColor: "#f5f5f5",
+			titleFontColor: "#333",
+			bodyFontColor: "#666",
+			bodySpacing: 4,
+			xPadding: 12,
+			mode: "x",
+			intersect: 0,
+			position: "nearest"
+		},
+		scales: {
+			yAxes: [
+				{
+					//barPercentage: 1.6,
+					gridLines: {
+						drawBorder: false,
+						color: "rgba(29,140,248,0.0)",
+						zeroLineColor: "transparent"
+					},
+					ticks: {
+						callback: (value, index, values) => saleToStr(value),
+						// suggestedMin: 100,
+						// suggestedMax: 300,
+						padding: 20,
+						fontColor: "#9a9a9a"
+					}
+				}
+			],
+			xAxes: [
+				{
+					type: "time",
+					//time: {unit: 'day'},
+					time: { tooltipFormat: "DD/MM/YYYY" },
+					barPercentage: 1.6,
+					gridLines: {
+						drawBorder: false,
+						color: "rgba(29,140,248,0.1)",
+						zeroLineColor: "transparent"
+					},
+					ticks: {
+						padding: 20,
+						fontColor: "#9a9a9a"
+					}
+				}
+			]
+		}
+	};
+
+	const dataFromR = r => {
+		let h = r.history;
+		return valueData([
+			{
+				data: processHistory(h, "value"),
+				color: "#b0e3af",
+				label: "Estimated value"
+			},
+			{
+				data: processHistory(h, "sale_price"),
+				color: "#e3b5af",
+				label: "Sale Price"
+			}
+		]);
+	};
+
 	return (
 		<Layout>
 			<SEO title="Home" description="CS:GO Math - Homepage" />
@@ -90,7 +219,7 @@ const IndexPage = () => {
 									align="center"
 								>
 									<Link to={r.case.name}>
-										<GatsbyImage 
+										<GatsbyImage
 											alt={`Image of ${r.case.name}`}
 											image={getImage(r.case.image)}
 											//class="img-fluid"
@@ -131,7 +260,7 @@ const IndexPage = () => {
 									align="center"
 								>
 									<Link to={r.key.name}>
-										<GatsbyImage 
+										<GatsbyImage
 											alt={`Image of ${r.key.name}`}
 											image={getImage(r.key.image)}
 											//class="img-fluid"
@@ -158,7 +287,7 @@ const IndexPage = () => {
 											{moment(myData.example.result[0].datetime).fromNow()}
 										</div>
 										<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
-											Sale Price: <strong>$2.50</strong>
+											Sale Price: <strong>{saleToStr(249)}</strong>
 										</p>
 									</div>
 								</div>
@@ -167,52 +296,55 @@ const IndexPage = () => {
 					</div>
 					<div class="row no-gutters mt-2">
 						<ul class="list-group col">
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<p class="my-0">Total Sale Price</p>
+							<div class="link shadhover" onClick={() => setOpen(open == r.case.name ? null : r.case.name)}>
+								<li class="bordbot list-group-item d-flex justify-content-between lh-condensed">
+									<div>
+										<p class="my-0">Total Sale Price</p>
+									</div>
+									<span class="text-muted">
+										{saleToStr(249 + r.case.sale_price)}
+									</span>
+								</li>
+								<li class="bordbot list-group-item d-flex justify-content-between lh-condensed">
+									<div>
+										<p class="my-0">Estimated Value</p>
+									</div>
+									<span class="text-muted">{saleToStr(r.value)}</span>
+								</li>
+								<li class="list-group-item d-flex justify-content-between lh-condensed">
+									<div>
+										<p class="my-0">
+											<strong>Case Opening Profit</strong>
+										</p>
+									</div>
+									<span class={`${color(r.value - (249 + r.case.sale_price))}`}>
+										{saleToStr(r.value - (249 + r.case.sale_price))}
+									</span>
+								</li>
+							</div>
+							{r.case.name == open && (
+								<div class="link shadhover p-4">
+									<Line data={dataFromR(r)} options={lineOptions} />
 								</div>
-								<span class="text-muted">
-									{saleToStr(250 + r.case.sale_price)}
-								</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<p class="my-0">Estimated Value</p>
-								</div>
-								<span class="text-muted">{saleToStr(r.value)}</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<p class="my-0">
-										<strong>Case Opening Profit</strong>
-									</p>
-								</div>
-								<span
-									class={`${color(
-										r.value - (250 + r.case.sale_price)
-									)}`}
-								>
-									{saleToStr(r.value - (250 + r.case.sale_price))}
-								</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<p class="my-0">
-										<strong>Case Opening Profit Ratio</strong>
-									</p>
-								</div>
-								<strong
-									class={`${color(
-										r.value - (250 + r.case.sale_price)
-									)}`}
-								>
-									{Math.round(
-										((r.value - (250 + r.case.sale_price)) /
-											(250 + r.case.sale_price)) *
-											100
-									) + "%"}
-								</strong>
-							</li>
+							)}
+							<div class="link shadhover">
+								<li class="list-group-item d-flex justify-content-between lh-condensed">
+									<div>
+										<p class="my-0">
+											<strong>Case Opening Profit Ratio</strong>
+										</p>
+									</div>
+									<strong
+										class={`${color(r.value - (249 + r.case.sale_price))}`}
+									>
+										{Math.round(
+											((r.value - (249 + r.case.sale_price)) /
+												(249 + r.case.sale_price)) *
+												100
+										) + "%"}
+									</strong>
+								</li>
+							</div>
 						</ul>
 					</div>
 				</div>

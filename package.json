@@ -23,6 +23,7 @@
 		"@fortawesome/free-solid-svg-icons": "^5.15.3",
 		"@fortawesome/react-fontawesome": "^0.1.14",
 		"bootstrap": "^4.6.0",
+		"chart.js": "^2.9.4",
 		"gatsby": "^3.0.4",
 		"gatsby-image": "^2.11.0",
 		"gatsby-plugin-fontawesome-css": "^1.1.0",
@@ -41,6 +42,7 @@
 		"moment": "^2.29.1",
 		"react": "^16.13.1",
 		"react-bootstrap": "^1.5.2",
+		"react-chartjs-2": "^2.11.1",
 		"react-cookie-consent": "^6.2.3",
 		"react-dom": "^16.13.1",
 		"react-helmet": "^6.1.0"

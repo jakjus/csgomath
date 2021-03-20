@@ -68,6 +68,37 @@ a:hover {
 		border:none;
 }
 
+.link {
+	cursor: pointer;
+	border-top: 1px solid rgba(0,0,0,.125);
+	border-left: 1px solid rgba(0,0,0,.125);
+	border-right: 1px solid rgba(0,0,0,.125);
+}
+
+.link:hover {
+	border-top: 1px solid rgba(0,0,0,.125);
+	border-left: 1px solid rgba(0,0,0,.125);
+	border-right: 1px solid rgba(0,0,0,.125);
+}
+
+.bordbot {
+	border-bottom: 1px solid rgba(0,0,0,.125) !important;
+}
+
+.link:last-child {
+	border: 1px solid rgba(0,0,0,.125);
+}
+
+.link:last-child:hover {
+	border: 1px solid rgba(0,0,0,.125);
+}
+
 .shadhover:hover {
-	border: 1px solid #adadad !important;
+	border-left: 1px solid #93f5eb !important;
+	border-right: 1px solid #93f5eb !important;
+	box-shadow: 0 0.18rem 0.95rem #daf2ef;
+}
+
+.list-group-item {
+	border: none
 }

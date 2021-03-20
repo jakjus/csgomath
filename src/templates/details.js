@@ -69,7 +69,7 @@ const Details = ({ pageContext: { r } }) => {
 						{r.name.includes('Key') ? <>
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Fixed Sale Price: </span>
-							<strong>$2.50</strong>
+							<strong>{saleToStr(249)}</strong>
 						</p>
 						<p style={{ fontSize: "0.9rem" }} class="card-text mb-auto">
 							<span class="text-muted"> Market Sale Price: </span>
@@ -115,8 +115,8 @@ const Details = ({ pageContext: { r } }) => {
 						{r.asset_description.descriptions.map(
 							el =>
 								el.value.replace(" ", "") && (
-									<Link to={urlMarketQuery(el.value)} target="_blank">
-										<li class="shadhover list-group-item d-flex justify-content-between lh-condensed">
+									<Link class="link shadhover" to={urlMarketQuery(el.value)} target="_blank">
+										<li class="list-group-item d-flex justify-content-between lh-condensed">
 											<div>
 												<p style={{ color: "#" + el.color }} class="my-0">
 													{el.value}
