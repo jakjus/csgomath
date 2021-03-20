@@ -15,7 +15,7 @@ const boxShadow = {
 //
 
 const Card = props => {
-	let r = props.r
+	let r = props.r;
 
 	const dataFromR = r => {
 		let h = r.history;
@@ -23,19 +23,21 @@ const Card = props => {
 			{
 				data: processHistory(h, "value"),
 				color: "#b0e3af",
+				colorbg: "#cef7cd",
 				label: "Estimated Value"
 			},
 			{
 				data: processHistory(h, "sale_price"),
 				color: "#e3b5af",
+				colorbg: "#f7cec8",
 				label: "Sale Price"
 			}
-		])
+		]);
 	};
 
 	useEffect(() => {
-		setValData(dataFromR(r))
-	},[])
+		setValData(dataFromR(r));
+	}, []);
 
 	const saleToStr = sale => {
 		let toadd = "";
@@ -67,6 +69,7 @@ const Card = props => {
 				borderColor: dataObj.color,
 				data: dataObj.data,
 				fill: false,
+				backgroundColor: dataObj.colorbg,
 				cubicInterpolationMode: "default",
 				borderDash: [],
 				borderDashOffset: 0.0,
@@ -273,15 +276,15 @@ const Card = props => {
 							</span>
 						</li>
 					</div>
-					{open &&
-					<div class="link shadhover p-4">
-						<Line
-							//datasetKeyProvider={() => "dkp"+r.case.name}
-							data={valData}
-							options={lineOptions}
-						/>
-					</div>
-					}
+					{open && (
+						<div class="link shadhover p-4">
+							<Line
+								data={valData}
+								datasetKeyProvider={() => btoa(Math.random()).substring(0, 12)}
+								options={lineOptions}
+							/>
+						</div>
+					)}
 					<div class="link shadhover">
 						<li class="list-group-item d-flex justify-content-between lh-condensed">
 							<div>
@@ -305,7 +308,6 @@ const Card = props => {
 };
 
 const IndexPage = () => {
-
 	const myData = useStaticQuery(graphql`
 		query MyQuery {
 			example {
@@ -348,26 +350,35 @@ const IndexPage = () => {
 		}
 	`);
 
-	myData.example.result.map(res => {
-		res.case_key_list_value.map(cklv => {
-			myData.example.result[0].case_key_list_value.map(cklvhere => {
-				if (cklv.case.name == cklvhere.case.name) {
-					cklvhere.history = cklvhere.history || [];
-					cklvhere.history.push({
-						datetime: res.datetime,
-						sale_price: 249 + cklv.case.sale_price,
-						value: cklv.value
-					});
-				}
+	const [myd, setMyd] = useState(null);
+
+	useEffect(() => {
+		!myData.example.result[0].case_key_list_value[0].history && myData.example.result.map(res => {
+			res.case_key_list_value.map(cklv => {
+				myData.example.result[0].case_key_list_value.map(cklvhere => {
+					if (cklv.case.name == cklvhere.case.name) {
+						cklvhere.history = cklvhere.history || [];
+						cklvhere.history.push({
+							datetime: res.datetime,
+							sale_price: 249 + cklv.case.sale_price,
+							value: cklv.value
+						});
+					}
+				});
 			});
 		});
-	});
+		setMyd(myData.example.result[0])
+	}, []);
 
 	return (
 		<Layout>
 			<SEO title="Home" description="CS:GO Math - Homepage" />
-			{myData.example.result[0].case_key_list_value.map(r => (
-				<Card key={r.case.name} r={r} datetime={myData.example.result[0].datetime}/>
+			{myd && myd.case_key_list_value.map(r => (
+				<Card
+					key={r.case.name}
+					r={r}
+					datetime={myd.datetime}
+				/>
 			))}
 		</Layout>
 	);
