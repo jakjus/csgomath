@@ -136,11 +136,11 @@ exports.createPages = async ({ graphql, actions }) => {
 	`);
 
 	myData.data.example.result.case_key_list_value.forEach(async r => {
-		createPage({
-			path: `/${r.case.name}-${r.case.key}`,
-			component: require.resolve(`./src/templates/pairDetails.js`),
-			context: { r: r }
-		});
+		// createPage({
+		// 	path: `/${r.case.name}-${r.case.key}`,
+		// 	component: require.resolve(`./src/templates/pairDetails.js`),
+		// 	context: { r: r }
+		// });
 		createPage({
 			path: `/${r.case.name}`,
 			component: require.resolve(`./src/templates/details.js`),
