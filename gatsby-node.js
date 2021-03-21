@@ -1,7 +1,6 @@
 const fetch = require(`node-fetch`);
 const path = require(`path`);
 const { createRemoteFileNode } = require("gatsby-source-filesystem");
-//const { createFilePath } = require(`gatsby-source-filesystem`);
 
 exports.sourceNodes = async ({
 	actions: { createNode, createNodeField },
@@ -13,9 +12,26 @@ exports.sourceNodes = async ({
 	// get data from GitHub API at build time
 	const result = await fetch(`http://51.195.45.0:3000/api/cases`);
 	let resultData = await result.json();
+
+	await resultData.map(res => {
+		res.case_key_list_value.map(cklv => {
+			resultData[0].case_key_list_value.map(cklvhere => {
+				if (cklv.case.name == cklvhere.case.name) {
+					cklvhere.history = cklvhere.history || [];
+					cklvhere.history.push({
+						datetime: res.datetime,
+						sale_price: 249 + cklv.case.sale_price,
+						value: cklv.value
+					});
+				}
+			});
+		});
+	});
+
+	await console.log(resultData[0])
 	// create node for build time data example in the docs
 	let node = await createNode({
-		result: resultData,
+		result: resultData[0],
 		id: `myresult`,
 		parent: null,
 		children: [],
@@ -31,12 +47,12 @@ exports.onCreateNode = async ({ node, actions, getCache, createNodeId }) => {
 	if (node.id == "myresult") {
 		const img_preurl =
 			"https://community.akamai.steamstatic.com/economy/image/";
-		for (pair of node.result[0].case_key_list_value) {
+		for (pair of node.result.case_key_list_value) {
 			let newnode = await createRemoteFileNode({
 				url:
 					img_preurl +
 					pair.case.asset_description.icon_url,
-				parentNodeId: node.result[0].case_key_list_value[0].case.id,
+				parentNodeId: node.result.case_key_list_value[0].case.id,
 				getCache,
 				createNode,
 				createNodeId
@@ -45,7 +61,7 @@ exports.onCreateNode = async ({ node, actions, getCache, createNodeId }) => {
 				url:
 					img_preurl +
 					pair.key.asset_description.icon_url,
-				parentNodeId: node.result[0].case_key_list_value[0].id,
+				parentNodeId: node.result.case_key_list_value[0].id,
 				getCache,
 				createNode,
 				createNodeId
@@ -119,7 +135,12 @@ exports.createPages = async ({ graphql, actions }) => {
 		}
 	`);
 
-	myData.data.example.result[0].case_key_list_value.forEach(async r => {
+	myData.data.example.result.case_key_list_value.forEach(async r => {
+		createPage({
+			path: `/${r.case.name}-${r.case.key}`,
+			component: require.resolve(`./src/templates/pairDetails.js`),
+			context: { r: r }
+		});
 		createPage({
 			path: `/${r.case.name}`,
 			component: require.resolve(`./src/templates/details.js`),

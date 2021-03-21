@@ -35,10 +35,6 @@ const Card = props => {
 		]);
 	};
 
-	useEffect(() => {
-		setValData(dataFromR(r));
-	}, []);
-
 	const saleToStr = sale => {
 		let toadd = "";
 		let s = sale.toString();
@@ -59,7 +55,6 @@ const Card = props => {
 	const color = sale => (sale < 0 ? "text-danger" : "text-success");
 
 	const [open, setOpen] = useState(false);
-	const [valData, setValData] = useState(null);
 
 	const valueData = dataArr => {
 		let datasets = [];
@@ -279,7 +274,7 @@ const Card = props => {
 					{open && (
 						<div class="link shadhover p-4">
 							<Line
-								data={valData}
+								data={dataFromR(r)}
 								datasetKeyProvider={() => btoa(Math.random()).substring(0, 12)}
 								options={lineOptions}
 							/>
@@ -314,6 +309,11 @@ const IndexPage = () => {
 				result {
 					datetime
 					case_key_list_value {
+						history {
+							datetime
+							sale_price
+							value
+						}
 						value
 						case {
 							name
@@ -350,30 +350,11 @@ const IndexPage = () => {
 		}
 	`);
 
-	const [myd, setMyd] = useState(null);
-
-	useEffect(() => {
-		!myData.example.result[0].case_key_list_value[0].history && myData.example.result.map(res => {
-			res.case_key_list_value.map(cklv => {
-				myData.example.result[0].case_key_list_value.map(cklvhere => {
-					if (cklv.case.name == cklvhere.case.name) {
-						cklvhere.history = cklvhere.history || [];
-						cklvhere.history.push({
-							datetime: res.datetime,
-							sale_price: 249 + cklv.case.sale_price,
-							value: cklv.value
-						});
-					}
-				});
-			});
-		});
-		setMyd(myData.example.result[0])
-	}, []);
-
+	let myd = myData.example.result;
 	return (
 		<Layout>
 			<SEO title="Home" description="CS:GO Math - Homepage" />
-			{myd && myd.case_key_list_value.map(r => (
+			{myd.case_key_list_value.map(r => (
 				<Card
 					key={r.case.name}
 					r={r}
