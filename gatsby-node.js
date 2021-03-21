@@ -28,7 +28,6 @@ exports.sourceNodes = async ({
 		});
 	});
 
-	await console.log(resultData[0])
 	// create node for build time data example in the docs
 	let node = await createNode({
 		result: resultData[0],
@@ -136,11 +135,11 @@ exports.createPages = async ({ graphql, actions }) => {
 	`);
 
 	myData.data.example.result.case_key_list_value.forEach(async r => {
-		// createPage({
-		// 	path: `/${r.case.name}-${r.case.key}`,
-		// 	component: require.resolve(`./src/templates/pairDetails.js`),
-		// 	context: { r: r }
-		// });
+		createPage({
+			path: `/${r.case.name}-${r.case.key}`,
+			component: require.resolve(`./src/templates/pairDetails.js`),
+			context: { r: r }
+		});
 		createPage({
 			path: `/${r.case.name}`,
 			component: require.resolve(`./src/templates/details.js`),
