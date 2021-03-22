@@ -232,8 +232,8 @@ def get_estimated_chest_value(desc):
                     else:
                         item_value = special_item_found['Huntsman Knife']
                 else:
-                    item_value = get_estimated_one_weapon_value(item['value'])['total']
-                item['total'] = item_value['item']
+                    item_value = get_estimated_one_weapon_value(item['value'])
+                item['total'] = item_value['total']
                 item['item_details'] = item_value['item_details']
                 new_desc.append(item)
                 total_d[item['color']]['total'] += item_value*odds_rarity[item['color']]
