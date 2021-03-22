@@ -260,7 +260,7 @@ def get_many_weapon_value(name):
     for name0 in l:
         owv = get_estimated_one_weapon_value(name0, noadd=False)
         w = owv['total']
-        item_details.append(owv['item_details']
+        item_details.append(owv['item_details'])
         total += w
     return {'total': round(total/len(l)), 'item_details': item_details}
         
