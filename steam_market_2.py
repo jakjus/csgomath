@@ -130,7 +130,7 @@ def add_chest_value(case_key_list):
 
 def get_estimated_one_weapon_value(name):
     total = 0
-    items = filter_items(name)
+    items = filter_items(name + " (")
     ss = ' '.join(list(map(lambda x: x['name'], items)))
     try:
         if 'StatTrak' in ss:
