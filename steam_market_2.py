@@ -23,7 +23,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 sleeptime = 12
 
 parser = argparse.ArgumentParser(description='Define script options.')
-parser.add_argument("test", help="Test run with no items download.")
+parser.add_argument("-t", "--test", help="Test run with no items download.", action="store_true")
 args = parser.parse_args()
 
 # In[2]:
@@ -262,8 +262,8 @@ special_item_found = {}
 
 def main():
     if args.test:
-        # with open('steam_market_items.pickle', 'rb') as handle:
-        #     items = pickle.load(handle)
+        with open('steam_market_items.pickle', 'rb') as handle:
+            items = pickle.load(handle)
         print('Test finished.')
         return
     items = get_csgo_items()
