@@ -236,7 +236,7 @@ def get_estimated_chest_value(desc):
                 item['total'] = item_value['total']
                 item['item_details'] = item_value['item_details']
                 new_desc.append(item)
-                total_d[item['color']]['total'] += item_value*odds_rarity[item['color']]
+                total_d[item['color']]['total'] += item_value['total']*odds_rarity[item['color']]
                 total_d[item['color']]['occurences'] += 1
     for el in total_d:
         total += total_d[el]['total']/total_d[el]['occurences']
