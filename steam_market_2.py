@@ -12,6 +12,7 @@ import math
 import pprint
 import pickle
 import datetime
+import argparse
 
 odds_rarity = {'4b69ff': 0.7992327, '8847ff': 0.1598465, 'd32ce6': 0.0319693, 'eb4b4b': 0.0063939, 'ffd700': 0.0025575}
 odds_wear = {'Factory New':0.1471, 'Minimal Wear':0.2468,'Field-Tested':0.4318,'Battle-Scarred':0.0993,'Well-Worn':0.0792}
@@ -21,6 +22,9 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 # tax = 0.15
 sleeptime = 12
 
+parser = argparse.ArgumentParser(description='Define script options.')
+parser.add_argument("test", help="Test run with no items download.")
+args = parser.parse_args()
 
 # In[2]:
 
@@ -56,21 +60,11 @@ def get_csgo_items():
         i += 1
     return l
 
-items = get_csgo_items()
-print(len(items))
-
 
 # In[10]:
 
 
-#with open('steam_market_items2pickle', 'wb') as handle:
-#    pickle.dump(items, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-
-# In[6]:
-
-
-#pprint.pprint(items[0])
 filter_items_end = lambda name: list(filter(
     lambda x: name in x['name'] 
     and x['name'].index(name) == len(x['name']) - len(name), 
@@ -265,31 +259,26 @@ def get_many_weapon_value(name):
     return {'total': round(total/len(l)), 'item_details': item_details}
         
 special_item_found = {}
-cases = filter_items_end('Case')
-keys = filter_items_end('Case Key')
-#print(cases[2])
 
-#print(get_estimated_one_weapon_value('★ Butterfly Knife | Marble Fade'))
-#print(list(map(lambda x: x['name'], filter_items('★ Butterfly Knife | Marble Fade'))))
-case_key_list = extract_case_key_list(cases, keys)
-case_key_list_sale = add_sale_price(case_key_list)
-case_key_list_value = add_chest_value(case_key_list_sale)
-#pprint.pprint(list(map(lambda x: (x['case']['name'],x['case']['desc'],x['value'],x['case']['sale_price']+x['key']['sale_price']), case_key_list_value)))
+def main():
+    if args.test:
+        # with open('steam_market_items.pickle', 'rb') as handle:
+        #     items = pickle.load(handle)
+        print('Test finished.')
+        return
+    items = get_csgo_items()
+    with open('steam_market_items.pickle', 'wb') as handle:
+        pickle.dump(items, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    print(len(items))
+    cases = filter_items_end('Case')
+    keys = filter_items_end('Case Key')
+    case_key_list = extract_case_key_list(cases, keys)
+    case_key_list_sale = add_sale_price(case_key_list)
+    case_key_list_value = add_chest_value(case_key_list_sale)
+    url = 'http://51.195.45.0:3000/api/cases'
 
+    final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value':case_key_list_value}
+    r = requests.post(url, json=final_caseobj)
+    print(r)
 
-# In[8]:
-
-
-
-url = 'http://localhost:3000/api/cases'
-
-final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value':case_key_list_value}
-r = requests.post(url, json=final_caseobj)
-print(r)
-
-
-# In[ ]:
-
-
-
-
+main()
