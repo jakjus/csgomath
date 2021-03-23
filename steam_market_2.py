@@ -258,7 +258,7 @@ def get_many_weapon_value(name):
     l = get_unique_itemname_list(name)
     item_details = []
     for name0 in l:
-        owv = get_estimated_one_weapon_value(name0, noadd=False)
+        owv = get_estimated_one_weapon_value(name0, toadd=False)
         w = owv['total']
         item_details.append(owv['item_details'])
         total += w
