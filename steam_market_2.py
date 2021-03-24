@@ -24,6 +24,7 @@ sleeptime = 12
 
 parser = argparse.ArgumentParser(description='Define script options.')
 parser.add_argument("-u", "--upload", help="Only upload.", action="store_true")
+parser.add_argument("-i", "--uploaditems", help="Only upload items.", action="store_true")
 args = parser.parse_args()
 
 # In[2]:
@@ -64,16 +65,6 @@ def get_csgo_items():
 # In[10]:
 
 
-
-filter_items_end = lambda name: list(filter(
-    lambda x: name in x['name'] 
-    and x['name'].index(name) == len(x['name']) - len(name), 
-    items)
-                                )
-filter_items = lambda name: list(filter(
-    lambda x: name.replace('★ ','') in x['name'], 
-    items)
-                            )
 
 def extract_case_key_list(cases, case_keys):
     l = []
@@ -137,17 +128,17 @@ def get_estimated_one_weapon_value(name, toadd=True):
             for item in items:
                 for odd in odds_wear:
                     if odd in item['name'] and 'StatTrak' not in item['name']:
-                        found += 0.9*odds_wear[odd]
-                        total += 0.9*float(text_to_price(item['sale_price_text']))*odds_wear[odd]
-                        item['odd'] = odds_wear[odd]*0.9
-                        item['sale_price'] = float(text_to_price(item['sale_price_text']))
-                        item_details.append(item)
+                        todd = 0.9*odds_wear[odd]
+                        tsale_price = float(text_to_price(item['sale_price_text']))
+                        found += todd
+                        total += todd*tsale_price
+                        item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
                     elif odd in item['name'] and 'StatTrak' in item['name']:
-                        found += 0.1*odds_wear[odd]
-                        total += 0.1*float(text_to_price(item['sale_price_text']))*odds_wear[odd]
-                        item['odd'] = odds_wear[odd]*0.9
-                        item['sale_price'] = float(text_to_price(item['sale_price_text']))
-                        item_details.append(item)
+                        todd = 0.1*odds_wear[odd]
+                        tsale_price = float(text_to_price(item['sale_price_text']))
+                        found += todd
+                        total += todd*tsale_price
+                        item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
             if found < 1:
                 total /= found
         else:
@@ -257,13 +248,35 @@ def get_many_weapon_value(name):
         item_details.append(owv['item_details'])
         total += w
     return {'total': round(total/len(l)), 'item_details': item_details}
-        
+       
 special_item_found = {}
 
+filter_items_end = lambda name: list(filter(
+    lambda x: name in x['name'] 
+    and x['name'].index(name) == len(x['name']) - len(name), 
+    items)
+                                )
+
+filter_items = lambda name: list(filter(
+    lambda x: name.replace('★ ','') in x['name'], 
+    items))
+
+
 def main():
+    url = 'http://51.195.45.0:3000/api/cases'
+    global items
     if args.upload:
         with open('steam_market_items.pickle', 'rb') as handle:
             items = pickle.load(handle)
+    elif args.uploaditems:
+        with open('steam_market_items.pickle', 'rb') as handle:
+            items = pickle.load(handle)
+        print(len(items))
+        final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'items':{'a':'b'}}
+        r = requests.post(url, json=final_caseobj)
+        print(r)
+        print(r.status_code)
+        return
     else:
         items = get_csgo_items()
         with open('steam_market_items.pickle', 'wb') as handle:
@@ -274,9 +287,7 @@ def main():
     case_key_list = extract_case_key_list(cases, keys)
     case_key_list_sale = add_sale_price(case_key_list)
     case_key_list_value = add_chest_value(case_key_list_sale)
-    url = 'http://51.195.45.0:3000/api/cases'
-
-    final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value':case_key_list_value}
+    final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value': case_key_list_value[0]} 
     r = requests.post(url, json=final_caseobj)
     print(r)
 
