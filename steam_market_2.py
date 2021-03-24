@@ -287,8 +287,10 @@ def main():
     case_key_list = extract_case_key_list(cases, keys)
     case_key_list_sale = add_sale_price(case_key_list)
     case_key_list_value = add_chest_value(case_key_list_sale)
-    final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value': case_key_list_value[0]} 
+    final_caseobj = {'datetime': datetime.datetime.now().isoformat(), 'case_key_list_value': case_key_list_value} 
+    print('Starting upload...')
     r = requests.post(url, json=final_caseobj)
+    print('Done upload')
     print(r)
 
 main()
