@@ -23,7 +23,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 sleeptime = 12
 
 parser = argparse.ArgumentParser(description='Define script options.')
-parser.add_argument("-t", "--test", help="Test run with no items download.", action="store_true")
+parser.add_argument("-u", "--upload", help="Only upload.", action="store_true")
 args = parser.parse_args()
 
 # In[2]:
@@ -261,15 +261,14 @@ def get_many_weapon_value(name):
 special_item_found = {}
 
 def main():
-    if args.test:
+    if args.upload:
         with open('steam_market_items.pickle', 'rb') as handle:
             items = pickle.load(handle)
-        print('Test finished.')
-        return
-    items = get_csgo_items()
-    with open('steam_market_items.pickle', 'wb') as handle:
-        pickle.dump(items, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    print(len(items))
+    else:
+        items = get_csgo_items()
+        with open('steam_market_items.pickle', 'wb') as handle:
+            pickle.dump(items, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    print('Loaded items:', len(items))
     cases = filter_items_end('Case')
     keys = filter_items_end('Case Key')
     case_key_list = extract_case_key_list(cases, keys)
