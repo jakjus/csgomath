@@ -11,12 +11,15 @@ exports.sourceNodes = async ({
 }) => {
 	// get data from GitHub API at build time
 	let result = []
-	const count = await fetch(`http://51.195.45.0:3000/api/cases?count=1`);
+	let precount = await fetch(`http://51.195.45.0:3000/api/cases?count=1`);
+	let count = await precount.json()
+
 	for (i = 0; i < count; i++){
 		let p = await fetch(`http://51.195.45.0:3000/api/cases?skip=${i}`);
-		await result.push(p[0])
+		let topush = await p.json()
+		await result.push(topush[0])
 	}
-	let resultData = await result.json();
+	let resultData = await result
 
 	await resultData.map(res => {
 		res.case_key_list_value.map(cklv => {
