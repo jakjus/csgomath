@@ -10,8 +10,9 @@ exports.sourceNodes = async ({
 	store
 }) => {
 	// get data from GitHub API at build time
-	let resultData = await fetch(`http://51.195.45.0:3000/api/cases`).json()
-
+	// cons
+	const result = await fetch(`http://51.195.45.0:3000/api/cases`);
+	let resultData = await result.json();
 	await resultData.map(res => {
 		res.case_key_list_value.map(cklv => {
 			resultData[0].case_key_list_value.map(cklvhere => {
@@ -47,18 +48,14 @@ exports.onCreateNode = async ({ node, actions, getCache, createNodeId }) => {
 			"https://community.akamai.steamstatic.com/economy/image/";
 		for (pair of node.result.case_key_list_value) {
 			let newnode = await createRemoteFileNode({
-				url:
-					img_preurl +
-					pair.case.asset_description.icon_url,
+				url: img_preurl + pair.case.asset_description.icon_url,
 				parentNodeId: node.result.case_key_list_value[0].case.id,
 				getCache,
 				createNode,
 				createNodeId
 			});
 			let newnode2 = await createRemoteFileNode({
-				url:
-					img_preurl +
-					pair.key.asset_description.icon_url,
+				url: img_preurl + pair.key.asset_description.icon_url,
 				parentNodeId: node.result.case_key_list_value[0].id,
 				getCache,
 				createNode,
@@ -91,9 +88,7 @@ exports.createPages = async ({ graphql, actions }) => {
 							sell_price_text
 							image {
 								childImageSharp {
-									gatsbyImageData(
-										placeholder: BLURRED
-									)
+									gatsbyImageData(placeholder: BLURRED)
 								}
 							}
 							asset_description {
@@ -113,9 +108,7 @@ exports.createPages = async ({ graphql, actions }) => {
 							sell_listings
 							image {
 								childImageSharp {
-									gatsbyImageData(
-										placeholder: BLURRED
-									)
+									gatsbyImageData(placeholder: BLURRED)
 								}
 							}
 							asset_description {
