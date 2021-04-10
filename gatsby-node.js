@@ -10,7 +10,7 @@ exports.sourceNodes = async ({
 	store
 }) => {
 	// get data from GitHub API at build time
-	let resultData = await fetch(`http://51.195.45.0:3000/api/cases`)
+	let resultData = await fetch(`http://51.195.45.0:3000/api/cases`).json()
 
 	await resultData.map(res => {
 		res.case_key_list_value.map(cklv => {
