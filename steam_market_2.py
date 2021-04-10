@@ -120,7 +120,7 @@ def get_estimated_one_weapon_value(name, toadd=True):
     else:
         items = filter_items(name)
     ss = ' '.join(list(map(lambda x: x['name'], items)))
-    item_details = []
+    # item_details = []
     
     try:
         if 'StatTrak' in ss:
@@ -132,13 +132,13 @@ def get_estimated_one_weapon_value(name, toadd=True):
                         tsale_price = float(text_to_price(item['sale_price_text']))
                         found += todd
                         total += todd*tsale_price
-                        item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
+                        # item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
                     elif odd in item['name'] and 'StatTrak' in item['name']:
                         todd = 0.1*odds_wear[odd]
                         tsale_price = float(text_to_price(item['sale_price_text']))
                         found += todd
                         total += todd*tsale_price
-                        item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
+                        # item_details.append({'name':item['name'], 'odd': todd, 'sale_price': tsale_price, 'img': item['asset_description']['icon_url']})
             if found < 1:
                 total /= found
         else:
@@ -155,7 +155,7 @@ def get_estimated_one_weapon_value(name, toadd=True):
     except Exception as e:
         print('Error:', e, name)
         raise
-    return {'total': round(total), 'item_details': item_details}
+    return {'total': round(total)} # , 'item_details': item_details}
 
 def get_estimated_chest_value(desc):
     total_d = {}
@@ -219,7 +219,7 @@ def get_estimated_chest_value(desc):
                 else:
                     item_value = get_estimated_one_weapon_value(item['value'])
                 item['total'] = item_value['total']
-                item['item_details'] = item_value['item_details']
+                # item['item_details'] = item_value['item_details']
                 new_desc.append(item)
                 total_d[item['color']]['total'] += item_value['total']*odds_rarity[item['color']]
                 total_d[item['color']]['occurences'] += 1
@@ -241,13 +241,13 @@ def get_unique_itemname_list(name):
 def get_many_weapon_value(name):
     total = 0
     l = get_unique_itemname_list(name)
-    item_details = []
+    # item_details = []
     for name0 in l:
         owv = get_estimated_one_weapon_value(name0, toadd=False)
         w = owv['total']
-        item_details.append(owv['item_details'])
+        # item_details.append(owv['item_details'])
         total += w
-    return {'total': round(total/len(l)), 'item_details': item_details}
+    return {'total': round(total/len(l))} # 'item_details': item_details}
        
 special_item_found = {}
 

@@ -10,16 +10,7 @@ exports.sourceNodes = async ({
 	store
 }) => {
 	// get data from GitHub API at build time
-	let result = []
-	let precount = await fetch(`http://51.195.45.0:3000/api/cases?count=1`);
-	let count = await precount.json()
-
-	for (i = 0; i < count; i++){
-		let p = await fetch(`http://51.195.45.0:3000/api/cases?skip=${i}`);
-		let topush = await p.json()
-		await result.push(topush[0])
-	}
-	let resultData = await result
+	let resultData = await fetch(`http://51.195.45.0:3000/api/cases`)
 
 	await resultData.map(res => {
 		res.case_key_list_value.map(cklv => {
