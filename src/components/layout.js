@@ -48,7 +48,7 @@ export default function Layout({ children }) {
 					<Link to="https://jakjus.com">@jakjus</Link>.
 				</p>
 			</footer>
-			<div class="alert text-center cookiealert" role="alert">
+			<div style={{visibility: 'hidden'}} class="alert text-center cookiealert" role="alert">
 				<b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn more</a>
 
 				<button type="button" class="btn btn-primary btn-sm acceptcookies">

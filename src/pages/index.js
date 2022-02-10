@@ -7,68 +7,43 @@ import moment from "moment";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { Line } from "react-chartjs-2";
 import { Card } from "../components/Card";
+import { CardFake } from "../components/CardFake";
+
+const boxShadow = {
+  boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05)",
+};
+
 
 const IndexPage = () => {
-	const myData = useStaticQuery(graphql`
-		query MyQuery {
-			example {
-				result {
-					datetime
-					case_key_list_value {
-						history {
-							datetime
-							sale_price
-							value
-						}
-						value
-						case {
-							name
-							sale_price
-							sale_price_text
-							sell_listings
-							sell_price
-							sell_price_text
-							image {
-								childImageSharp {
-									gatsbyImageData(placeholder: BLURRED)
-								}
-							}
-							asset_description {
-								icon_url
-							}
-						}
-						key {
-							name
-							image {
-								childImageSharp {
-									gatsbyImageData(placeholder: BLURRED)
-								}
-							}
-							sale_price
-							sale_price_text
-							asset_description {
-								icon_url
-							}
-						}
-					}
-				}
-			}
-		}
-	`);
+  const [jsonData, setJsonData] = useState(null)
+  useEffect(() => {
+    async function fetchData() {
+      let result = await fetch(`http://host.jakjus.com:3010/api/cases`);
+      let data = await result.json();
+      setJsonData(data.data)
+    }
+    fetchData()
+  },[])
+  return (
+    <Layout>
+    <SEO title="Home" description="CS:GO Math - Homepage" />
+    {!jsonData && 
 
-	let myd = myData.example.result;
-	return (
-		<Layout>
-			<SEO title="Home" description="CS:GO Math - Homepage" />
-			{myd.case_key_list_value.map(r => (
-				<Card
-					key={r.case.name}
-					r={r}
-					datetime={myd.datetime}
-				/>
-			))}
-		</Layout>
-	);
+      <>
+      <CardFake/>
+      <CardFake/>
+      <CardFake/>
+      </>
+      }
+    {jsonData && jsonData.map(r => (
+      r.key &&
+      <Card
+      key={`k`+r.case.name}
+      r={r}
+      />
+    ))}
+    </Layout>
+  );
 };
 
 export default IndexPage;
