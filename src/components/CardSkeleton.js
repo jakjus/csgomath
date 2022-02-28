@@ -1,17 +1,10 @@
 import * as React from "react";
-import { useState } from "react";
-import Layout from "../components/layout";
-import { Link } from "gatsby";
-import SEO from "../components/seo";
-import moment from "moment";
-import { GatsbyImage, StaticImage, getImage } from "gatsby-plugin-image";
-import { Line } from "react-chartjs-2";
 
 const boxShadow = {
   boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, .05)"
 };
 
-export const CardFake = () => {
+export const CardSkeleton = () => {
   return (
     <div style={boxShadow} class="card p-3 mb-4 h-md-250">
     <div class="row no-gutters">
@@ -88,7 +81,7 @@ export const CardFake = () => {
     </div>
     </div>
 
-    
+
 
     </div>
     <div class="row no-gutters mt-2">
@@ -139,4 +132,4 @@ export const CardFake = () => {
   );
 };
 
-export default CardFake;
+export default CardSkeleton;

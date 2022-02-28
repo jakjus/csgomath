@@ -1,10 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
-import Layout from "../components/layout";
 import { Link } from "gatsby";
-import SEO from "../components/seo";
 import moment from "moment";
-import { GatsbyImage, StaticImage, getImage } from "gatsby-plugin-image";
 import { Line } from "react-chartjs-2";
 
 const boxShadow = {
@@ -35,24 +32,7 @@ export const Card = props => {
     ]);
   };
 
-  const saleToStr = sale => {
-    let toadd = "";
-    let s = sale.toString();
-    if (sale < 0) {
-      s = s.slice(1);
-      toadd = "-";
-    }
-    let r;
-    if (s.length === 1) {
-      r = "$0.0" + s;
-    } else if (s.length === 2) {
-      r = "$0." + s;
-    } else {
-      r = "$" + s.slice(0, -2) + "." + s.slice(-2);
-    }
-    return toadd + r;
-  };
-
+  const saleToStr = sale => (sale/100).toLocaleString("en-US", {style:"currency", currency:"USD"});
   const color = sale => (sale < 0 ? "text-danger" : "text-success");
 
   const [open, setOpen] = useState(false);
@@ -160,7 +140,6 @@ export const Card = props => {
     <img
     alt={`Image of ${r.case.name}`}
     src={r.case.icon_url}
-    image={r.case.icon_url}
     style={{width: '100%'}}
     className="animate"
     //class="img-fluid"
@@ -171,7 +150,7 @@ export const Card = props => {
     <div class="col-8">
     <div class="card-body d-flex flex-column align-items-start">
     <strong class="d-inline-block mb-2 text-primary">Case</strong>
-    <h4 class="mb-0">
+    <span class="card-title-add mb-0">
     <span
     to={r.case.name}
     style={{ fontFamily: "DM Serif Display" }}
@@ -180,7 +159,7 @@ export const Card = props => {
     >
     {r.case.name}
     </span>
-    </h4>
+    </span>
     <div class="mb-1 text-muted">
     {moment.unix(r.case.lastTimestamp).fromNow()}
     </div>
@@ -203,7 +182,6 @@ export const Card = props => {
     <img
     alt={`Image of ${r.case.name}`}
     src={r.key.icon_url}
-    image={r.key.icon_url}
     style={{width: '100%'}}
     className="animate"
     />
@@ -212,7 +190,7 @@ export const Card = props => {
     <div class="col-8">
     <div class="card-body d-flex flex-column align-items-start">
     <strong class="d-inline-block mb-2 text-success">Key</strong>
-    <h4 class="mb-0">
+    <span class="card-title-add mb-0">
     <span
     style={{ fontFamily: "DM Serif Display" }}
     class="text-dark"
@@ -220,7 +198,7 @@ export const Card = props => {
     >
     {r.key.name}
     </span>
-    </h4>
+    </span>
     <div class="mb-1 text-muted">
     {moment.unix(r.case.lastTimestamp).fromNow()}
     </div>
@@ -235,30 +213,30 @@ export const Card = props => {
 
     </div>
     <div class="row no-gutters mt-2">
-    <ul class="list-group col">
+    <div class="list-group col">
     <div
     class="link shadhover"
     aria-checked={open}
     tabIndex="0"
     role="switch"
-    onKeyDown={() => setOpen(!open)}
+    onKeyDown={(e) => {if (e.keyCode === 13) setOpen(!open)}}
     onClick={() => setOpen(!open)}
     >
-    <li class="bordbot list-group-item d-flex justify-content-between lh-condensed">
+    <div class="bordbot list-group-item d-flex justify-content-between lh-condensed">
     <div>
     <p class="my-0">Total Sale Price</p>
     </div>
-    <span class="text-muted">
-    {saleToStr(250 + r.case.lastSalePrice)}
-    </span>
-    </li>
-    <li class="bordbot list-group-item d-flex justify-content-between lh-condensed">
+    <span class="text-muted">{saleToStr(250 + r.case.lastSalePrice)}</span>
+    </div>
+
+    <div class="bordbot list-group-item d-flex justify-content-between lh-condensed">
     <div>
     <p class="my-0">Estimated Value</p>
     </div>
     <span class="text-muted">{saleToStr(r.case.lastTotal)}</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
+    </div>
+
+    <div class="list-group-item d-flex justify-content-between lh-condensed">
     <div>
     <p class="my-0">
     <strong>Case Opening Profit</strong>
@@ -267,7 +245,7 @@ export const Card = props => {
     <span class={`${color(r.case.lastTotal - (250 + r.case.lastSalePrice))}`}>
     {saleToStr(r.case.lastTotal - (250 + r.case.lastSalePrice))}
     </span>
-    </li>
+    </div>
     </div>
     {open && (
       <div class="link shadhover p-4">
@@ -279,7 +257,7 @@ export const Card = props => {
       </div>
     )}
     <div class="link shadhover">
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
+    <div class="list-group-item d-flex justify-content-between lh-condensed">
     <div>
     <p class="my-0">
     <strong>Case Opening Profit Ratio</strong>
@@ -292,9 +270,9 @@ export const Card = props => {
       100
     ) + "%"}
     </strong>
-    </li>
     </div>
-    </ul>
+    </div>
+    </div>
     </div>
     </div>
   );
